@@ -1,0 +1,64 @@
+{
+  "storeCard" : {
+    "backFields" : [
+      {
+        "value" : "[[NAM]]",
+        "key" : "back-name",
+        "label" : "NAMN"
+      },
+      {
+        "value" : "[[DOB]]",
+        "key" : "back-dob",
+        "label" : "FØDSELSDATO"
+      },
+      {
+        "label" : "UTLØPSDATO",
+        "value" : "[[EXP]]",
+        "key" : "back-expirydate"
+      },
+      {
+        "value" : "Norsk koronasertifikat – oppretta av <a href='https://e-skils.com/KoronapassGenerator'>Koronapass generator</a>",
+        "key" : "back-description",
+        "label" : "OM"
+      }
+    ],
+    "secondaryFields" : [
+      {
+        "value" : "[[EXP]]",
+        "key" : "expirydate",
+        "label" : "UTLØPSDATO"
+      }
+    ],
+    "primaryFields" : [
+      {
+        "value" : "[[NAM]]",
+        "key" : "nam",
+        "label" : "NAMN"
+      }
+    ],
+    "auxiliaryFields" : [
+      {
+        "textAlignment" : "PKTextAlignmentLeft",
+        "value" : "[[DOB]]",
+        "key" : "dob",
+        "label" : "FØDSELSÅR"
+      }
+    ]
+  },
+  "backgroundColor" : "rgb(90,165,165)",
+  "passTypeIdentifier" : "pass.com.skillbreak.norwCoronaCertif",
+  "serialNumber" : "[[SER]]",
+  "organizationName" : "Eskil Gjerde Sviggum",
+  "foregroundColor" : "rgb(255,255,255)",
+  "labelColor" : "rgb(204,224,224)",
+  "teamIdentifier" : "EUKTZ7725R",
+  "barcodes" : [{
+      "message" : "[[QRC]]",
+      "format" : "PKBarcodeFormatQR",
+      "messageEncoding" : "iso-8859-1"
+    }],
+  "formatVersion" : 1,
+  "description" : "Koronapass",
+  "logoText": "Koronapass",
+  "expirationDate": "[[W3E]]"
+}

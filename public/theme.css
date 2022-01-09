@@ -1,0 +1,34 @@
+:root {
+
+    --primary: #5aa5a5;
+    --secondary: #379096;
+
+    --backgroundColor: #f2f7f7;
+    --background: linear-gradient(to bottom, #f2f7f7, #def1f1);
+    --secondaryBackground: #ebf0f1;
+    --cell: hsla(0, 0%, 100%, 0.7);
+    --border: #379096;
+    --label: #182825;
+    --secondaryLabel: #281e18c8;
+    --tertiaryLabel: #281e1873;
+
+    --disabled: #cce0e0;
+    --footer: #a9b9b9;
+
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --backgroundColor: #080e0e;
+        --background: linear-gradient(to bottom, #080e0e, #1a2121);
+        --secondaryBackground: #19191a;
+        --cell: rgba(49, 59, 58, 0.596);
+        --border: #379096;
+        --label: #eaf4f2;
+        --secondaryLabel: #f4ebe6c8;
+        --tertiaryLabel: #f8eee873;
+    
+        --disabled: #333a3a;    
+        --footer: #656d6d;
+    }
+}

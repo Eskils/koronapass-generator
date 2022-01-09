@@ -1,109 +1,68 @@
-*Psst — looking for a more complete solution? Check out [SvelteKit](https://kit.svelte.dev), the official framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.*
+# Koronapass generator
 
-*Looking for a shareable component template instead? You can [use SvelteKit for that as well](https://kit.svelte.dev/docs#packaging) or the older [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+Web app for å generere norsk koronapass-kort til Apple Lommebok. Vel bilete av QR-koden frå Helse Norge for å generere pass som kan leggast til i Apple Lommebok. Dette gjer koronapasset tilgjengeleg på låst skjerm ved å trykke to gonger på heim-knappen / side-knappen.
 
----
+<https://koronapass.e-skils.com>
 
-# svelte app
+## Om
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+Koronapass generator gjer om QR-koden i det norske koronapasset til eit kort som du kan ha i Apple Lommebok / Apple Wallet for å enkelt få tilgang til det. Du kan nå kortet ved å trykke to gonger på heim-knappen / side-knappen. Kortet vert generert lokalt på eininga for å unngå å sende sensitiv helsedata til ein tjenar. Signering av kortet – som er nødvendig for at Apple Wallet skal kunne opne kortet – skjer på ein tjenar, men treng kun sjekksumen av innhaldet i kortet.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+Denne repoen inneheld både backend (koronapass-sign) og frontend (resten av filene).
+
+## Prosessen bak
+
+Koronapass generator hentar ut all informasjon frå QR-koden og set saman eit Wallet-kort av typen `.pkpass` (MIME: `application/vnd.apple.pkpass`). Dette kortet er ei `.zip`-fil i forkledning med all informasjon og bilete saman med ei liste med sjekksummar til alle filene og ein digital CMS-signatur. Denne signaturen vert oppretta frå lista med sjekksummane og krev difor ikkje at helseinformasjonen vert sendt til tjenaren.
+
+**På eininga:**
+
+- Les QR-koden
+- Hent ut informasjonen lagra i koden (namn, fødselsår, utløpsdato)
+- Last ned alle komponentar som skal vere med i kortet (bilete, datamalar i JSON)
+- Sett inn informasjon i datamalen til kortet
+- Rekn ut SHA1-summen (sjekksum) til datamalen og legg inn i lista over sjekksummar
+- Send lista med sjekksummar til tjenaren og motta CMS-signaturen
+- Lag ei `.zip`-fil med alle komponentane og last ned som `.pkpass`
+
+**På tjenaren:**
+
+- Motta liste med sjekksummar
+- Valider sjekksummar
+- Bruk `openssl cms` til å lage ein signatur av lista med gyldige `pkcs7` sertifikat
+- Send signaturen tilbale
+
+## Kom i gang
+
+Installer dependencies og start utviklarmiljø:
 
 ```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
-```
-
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
 npm install
-```
-
-...then start [Rollup](https://rollupjs.org):
-
-```bash
 npm run dev
 ```
 
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-If you want to use `baseUrl` or `path` aliases within your `tsconfig`, you need to set up `@rollup/plugin-alias` to tell Rollup to resolve the aliases. For more info, see [this StackOverflow question](https://stackoverflow.com/questions/63427935/setup-tsconfig-path-in-svelte).
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
+Bygg og deploy (Vercel bygger til produksjon):
 
 ```bash
 cd public
 vercel deploy --name my-project
 ```
 
-### With [surge](https://surge.sh/)
+## Merknadar
 
-Install `surge` if you haven't already:
+ Dependency `base45` får ein feil under dekoding. Dette kan løysast ved å endre return frå `Buffer.from(res)` til `res` (node_modules/base45/lib/base45.js).  
 
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
+Dersom ein bilderessurs i passet skal endrast må sjekksummane også oppdaterast. Både på frontend og backend. Sjekksummen til ei fil kan skaffast med:
 
 ```bash
-npm run build
-surge public my-project.surge.sh
+openssl sha1 -hex -out /dev/stdout <sti til fil>
 ```
+
+Backenden krev gyldege sertifikat og nøklar i `pkcs7`-format (`.pem`). Sertifikat/nøklar som skal vere til stades er:  
+
+- certificate.pem   (Pass Type ID)
+- wwdr.pem          (Apple Worldwide Developer Relations Certification Authority)
+- key.pem           (Privat nøkkel)
+
+## Credits
+
+A huge thanks to [covidpass-org/covidpass](https://github.com/covidpass-org/covidpass) which helped a lot along the way—especially with regards to decoding the the QR-code.
