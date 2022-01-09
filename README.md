@@ -40,11 +40,12 @@ npm install
 npm run dev
 ```
 
-Bygg og deploy (Vercel bygger til produksjon):
+Bygg og deploy:
 
 ```bash
+npm run build
 cd public
-vercel deploy --name my-project
+vercel --prod
 ```
 
 ## Merknadar
