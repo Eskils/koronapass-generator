@@ -9,16 +9,6 @@ function calculateSHA(str: string): string {
         return hex;
 }
 
-function randomID(len=10): string {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let res = "";
-    for (let i=0; i < len; i++) {
-        const idx = Math.floor(Math.random() * (chars.length-1));
-        res += chars[idx];
-    }
-    return res;
-}
-
 async function signManifest(manifest: string): Promise<Blob> {//Promise<Blob> {
     let APIRoot = "https://koronaspass-sign.herokuapp.com/";
     if (sessionStorage.getItem("ENVDEVEL")) { APIRoot = "http://localhost:5003"; }
@@ -68,7 +58,7 @@ export async function createPass(sertifikat: Koronasertifikat): Promise<Blob> {
     const utløpsdato = sertifikat.datestringFromUtløpsdato();
     const w3cUtløpsdato = sertifikat.w3cDatestringFromUtløpsdato();
     const qrString = sertifikat.qrKode;
-    const serialNumber = "NKS_" + randomID();
+    const serialNumber = "NKS_" + `${namestruct.gnt}${namestruct.fnt}${dob}`;
 
     passFile = passFile.split("[[NAM]]").join(name);            // Full name
     passFile = passFile.split("[[DOB]]").join(dob);             // Year of birth
