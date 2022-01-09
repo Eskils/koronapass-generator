@@ -18,7 +18,9 @@ Sett inn gyldige sertifikat og nøklar i `pkcs7`-format (`.pem`). Sertifikat/nø
 - wwdr.pem          (Apple Worldwide Developer Relations Certification Authority)
 - key.pem           (Privat nøkkel)
 
-Skriv inn korrekt passord til nøkkelen i `sign.sh`. 
+Skriv inn korrekt passord til nøkkelen i `sign.sh`.
+
+**Viktig:** Opprett mappene `keys` (til nøklar og sertifikat) og `files` (til manifest.json og signature).
 
 **Start utviklarmiljø:**
 ```bash
