@@ -160,9 +160,7 @@ function generateCard() {
 		width: 100%;
 		height: 100%;
 		position: relative;
-		z-index: 1;
 		box-sizing: border-box;
-		overflow: auto;
 	}
 
 	.container>div>h1 {

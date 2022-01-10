@@ -17,7 +17,7 @@
         "key" : "back-expirydate"
       },
       {
-        "value" : "Norsk koronasertifikat – oppretta av <a href='https://e-skils.com/KoronapassGenerator'>Koronapass generator</a>",
+        "value" : "Norsk koronasertifikat – oppretta av <a href='https://koronapass.e-skils.com'>Koronapass generator</a>",
         "key" : "back-description",
         "label" : "OM"
       }
